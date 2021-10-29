@@ -1,0 +1,132 @@
+<%- include("header.ejs") %>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript">
+
+    </script>
+    <div class="row">
+        <div class="col">
+         <div class="card mt-3">
+             <div class="card-header">View Task</div>
+             <div class="card-body">
+                <form onsubmit="return false">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="">#</label>
+                            <input type="number" class="form-control shadow-sm" name="" id="id">
+                        </div>
+                        <div class="col-md-3">
+                            <label for=""></label>
+                            <input type="submit" id="check" value="view task" class="btn btn-primary form-control"
+                                name="" id="">
+                        </div>
+                       
+                    </div> 
+                    </div>
+                </form>
+
+
+
+
+
+             </div>
+        <div class="card mt-2">
+            <div class="card-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col">
+                            <label for="">Id of the todo</label>
+                            <input type="number" name="" class="form-control shadow-sm" readonly id="id" >
+                        </div>
+                        <div class="col">
+                            <label for="">Name of the task</label>
+                            <input type="text" name="" class="form-control shadow-sm" readonly id="name" >
+                        </div>
+                        <div class="col">
+                            <label for="">Status</label>
+                            <input type="text" name="" class="form-control shadow-sm" readonly id="status" >
+                        </div>
+                    </div>
+                    <div class="row">
+                      
+                            <div class="col">
+                                <label for="">Description</label>
+                                <Textarea id="descr" class="form-control shadow-sm">
+
+                                </Textarea>
+                         <div class="col">
+                            <label for="">Number of days</label>
+                            <input type="text" name="" class="form-control shadow-sm" readonly id="days" >
+                       </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for=""></label>
+                            <button class="form-control bg-primary">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+         </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(() => {
+
+//This line of code will create provider to the block chain network
+            const provider = new ethers.providers.Web3Provider(window.ethereum)
+//The signer is the key that will be used to sign the details of the user
+            const signer = provider.getSigner()
+            $("#check").click(async () => {
+               
+                var Id = $("#id").val()
+                //abi respresent an interface of the smart contract by proviing the methods
+                const abi = [
+                    "function newTodo(uint id,string memory name,string memory desc,string memory status,uint ndays) public",
+                    "function  todoNumber()view  public  returns(uint[]  memory)",
+                    "function getTodo(uint  id)public view  returns(uint _id,string memory name,string memory desc,string memory status,uint _days)",
+                    "function  CountTod()public view returns(uint num)",
+                ]
+
+
+                const address = "0x35978a1815dD72e27E2c22757591e811ee9D8FF3";
+                //we call the contract in the read mod
+                const TodoR= new ethers.Contract(address, abi,provider);
+                //call the contract in the write mod
+
+                TodoR.getTodo(Id).then((todo)=>{
+                    console.log(todo)
+                    $("#id").val(todo._id)
+                    $("#name").val(todo.name)
+                    $("#status").val(todo.status)
+                    $("#days").val(todo._days)
+                    $("#descr").val(todo.desc)
+                 
+                }).catch((err)=>{
+                    console.log(err)
+                })
+              
+                
+
+
+            //   Todow.todoNumber().then((data)=>{
+
+            //     console.log(data)
+            //   })
+              
+
+
+
+
+
+
+
+
+
+            })
+
+        })
+    </script>
+    <%- include("footer.ejs") %>

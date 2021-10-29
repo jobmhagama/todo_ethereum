@@ -1,0 +1,108 @@
+<%- include("header.ejs") %>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript">
+
+    </script>
+    <div class="row">
+       <div class="col">
+        <div class="card mt-2">
+            <div class="card-header">
+                All todos
+            </div>
+            <div class="card-body">
+          <table class="table table-responsive">
+              <tr>
+                  <td>Id</td>
+                  <td>name</td>
+                  <td>Satus</td>
+                  <td>Description</td>
+                  <td>Days</td>
+              </tr>
+              <tbody id="todos">
+                <tr>
+                    <td>1</td>
+                    <td>MAlaria iNVESTIGATION</td>
+                    <td>kk</td>
+                    <td>dd</td>
+                    <td>dd</td>
+                </tr>
+              </tbody>
+          </table>
+
+
+                <script src="https://code.jquery.com/jquery-3.6.0.js"
+                integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+            <script>
+                $(document).ready(() => {
+        
+        //This line of code will create provider to the block chain network
+                    const provider = new ethers.providers.Web3Provider(window.ethereum)
+        //The signer is the key that will be used to sign the details of the user
+                    const signer = provider.getSigner()
+                 
+                    
+                       
+                        var Id = $("#id").val()
+                        //abi respresent an interface of the smart contract by proviing the methods
+                        const abi = [
+                            "function newTodo(uint id,string memory name,string memory desc,string memory status,uint ndays) public",
+                            "function  todoNumber()view  public  returns(uint[]  memory)",
+                            "function getTodo(uint  id)public view  returns(uint _id,string memory name,string memory desc,string memory status,uint _days)",
+                            "function  CountTod()public view returns(uint num)",
+                        ]
+        
+        
+                        const address = "0x35978a1815dD72e27E2c22757591e811ee9D8FF3";
+                        //we call the contract in the read mod
+                        const TodoR = new ethers.Contract(address, abi,provider);
+                        const TodoW = new ethers.Contract(address, abi,provider);
+                        //call the contract in the write mod
+        
+                        TodoR.CountTod().then((todo)=>{
+                            var length= parseInt(todo)
+                         
+                            for(i=0;i < length;i++){
+        
+                          TodoR.getTodo(i).then((data)=>{
+
+         console.log(parseInt(data.id))
+                            $('#todos').append("<tr><td>"+parseInt(data.id)+"</td><td>"+data.name+"</td><td>"+data.desc+"</td><td>"+data.status+"</td><td>"+data.days+"</td></tr>")
+               
+        
+                          })
+        
+        
+                            }
+        
+                        }).catch((err)=>{
+                            console.log(err)
+                        })
+                      
+                        
+        
+        
+                    //   Todow.todoNumber().then((data)=>{
+        
+                    //     console.log(data)
+                    //   })
+                      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+             
+        
+                })
+            </script>
+              
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+   
+    <%- include("footer.ejs") %>

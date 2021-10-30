@@ -81,24 +81,26 @@
             const signer = provider.getSigner()
             $("#check").click(async () => {
                
-                var Id = $("#id").val()
+                var Id = parseInt($("#id").val())
+                console.log(typeof(Id))
+              
                 //abi respresent an interface of the smart contract by proviing the methods
                 const abi = [
-                    "function newTodo(uint id,string memory name,string memory desc,string memory status,uint ndays) public",
+                    "function newTodo(string memory name,string memory desc,string memory status,uint ndays) public",
                     "function  todoNumber()view  public  returns(uint[]  memory)",
                     "function getTodo(uint  id)public view  returns(uint _id,string memory name,string memory desc,string memory status,uint _days)",
                     "function  CountTod()public view returns(uint num)",
                 ]
 
-
-                const address = "0x35978a1815dD72e27E2c22757591e811ee9D8FF3";
+                const address = "0xa8FBfbE8A8565203c76a451C5198b1ac71dbCAEC";
+                
                 //we call the contract in the read mod
                 const TodoR= new ethers.Contract(address, abi,provider);
                 //call the contract in the write mod
 
                 TodoR.getTodo(Id).then((todo)=>{
                     console.log(todo)
-                    $("#id").val(todo._id)
+                    $("#id").val(parseInt(todo._id))
                     $("#name").val(todo.name)
                     $("#status").val(todo.status)
                     $("#days").val(todo._days)

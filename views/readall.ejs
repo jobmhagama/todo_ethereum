@@ -45,7 +45,7 @@
                         ]
         
         
-                        const address = "0x35978a1815dD72e27E2c22757591e811ee9D8FF3";
+                        const address = "0xa8FBfbE8A8565203c76a451C5198b1ac71dbCAEC";
                         //we call the contract in the read mod
                         const TodoR = new ethers.Contract(address, abi,provider);
                         const TodoW = new ethers.Contract(address, abi,provider);
@@ -54,12 +54,14 @@
                         TodoR.CountTod().then((todo)=>{
                             var length= parseInt(todo)
                          
-                            for(i=0;i < length;i++){
+                            for(i=1;i <= length;i++){
         
                           TodoR.getTodo(i).then((data)=>{
 
                        console.log(data)
-                           // $('#todos').append("<tr><td>"+parseInt(data.id)+"</td><td>"+data.name+"</td><td>"+data.desc+"</td><td>"+data.status+"</td><td>"+data.days+"</td></tr>")
+
+                       console.log(data._days)
+                         $('#todos').append("<tr><td>"+parseInt(data._id)+"</td><td>"+data.name+"</td><td>"+data.desc+"</td><td>"+data.status+"</td><td>"+data._days+"</td></tr>")
                
         
                           })

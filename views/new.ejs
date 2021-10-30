@@ -63,7 +63,7 @@
                 var todo = $("#data").val()
                 var name = $("#name").val()
                 var status = $("#status").val()
-                var duration = $("#duration").val()
+                var duration = parseInt($("#duration").val())
                 // var Id = $("#id").val()
                 //abi respresent an interface of the smart contract by proviing the methods
                 const abi = [
@@ -74,7 +74,7 @@
                 ]
 
 
-                const address = "0x21b7efB17e1C85764105A452EDf2572FDdC0fB28";
+                const address = "0xa8FBfbE8A8565203c76a451C5198b1ac71dbCAEC";
                 //we call the contract in the read mod
                 const TodoR= new ethers.Contract(address, abi,provider);
                 //call the contract in the write mod

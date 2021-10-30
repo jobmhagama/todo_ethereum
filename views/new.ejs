@@ -9,10 +9,7 @@
              <div class="card-body">
                 <form onsubmit="return false">
                     <div class="row">
-                        <div class="col">
-                            <label for="">#</label>
-                            <input type="number" class="form-control shadow-sm" name="" id="id">
-                        </div>
+                        
                         <div class="col">
                             <label for="">Name of the task</label>
                             <input type="text" class="form-control shadow-sm" name="" id="name">
@@ -67,23 +64,23 @@
                 var name = $("#name").val()
                 var status = $("#status").val()
                 var duration = $("#duration").val()
-                var Id = $("#id").val()
+                // var Id = $("#id").val()
                 //abi respresent an interface of the smart contract by proviing the methods
                 const abi = [
-                    "function newTodo(uint id,string memory name,string memory desc,string memory status,uint ndays) public",
+                    "function newTodo(string memory name,string memory desc,string memory status,uint ndays) public",
                     "function  todoNumber()view  public  returns(uint[]  memory)",
                     "function getTodo(uint  id)public view  returns(uint _id,string memory name,string memory desc,string memory status,uint _days)",
                     "function  CountTod()public view returns(uint num)",
                 ]
 
 
-                const address = "0x35978a1815dD72e27E2c22757591e811ee9D8FF3";
+                const address = "0x21b7efB17e1C85764105A452EDf2572FDdC0fB28";
                 //we call the contract in the read mod
                 const TodoR= new ethers.Contract(address, abi,provider);
                 //call the contract in the write mod
                 const TodoW= new ethers.Contract(address, abi,signer);
                 //call the contract in t
-                const data = await TodoW.newTodo(Id,name,todo,status,duration)
+                const data = await TodoW.newTodo(name,todo,status,duration)
                 //The receiptobject is the transaction details
                 const receipt = await data.wait()
                  console.log(receipt)
